@@ -46,6 +46,15 @@ function getMaxQuantityDiscount(applicableQuantities: Discount[]) {
 }
 
 /**
+ * 특정 상품의 최대 할인율 계산
+ * @param {Discount[]} discounts - 할인 정보
+ * @returns - 최대 할인율
+ */
+export function getMaxQuantityDiscountRate(discounts: Discount[]) {
+  return getMaxQuantityDiscount(discounts).rate;
+}
+
+/**
  * 특정 아이템의 최대 할인율 계산
  * @param {CartItem} item - 카트에 담겨있는 개별 상품
  * @returns - 최대 할인율
@@ -135,7 +144,7 @@ export function getAvailablePurchaseQuantity(stock: number, quantity: number) {
 }
 
 /**
- *
+ * 장바구니 내 상품 수량 변경
  * @param {CartItem[]} cart - 장바구니
  * @param {string} productId - 상품 ID
  * @param {number} newQuantity - 변경할 상품 수량
