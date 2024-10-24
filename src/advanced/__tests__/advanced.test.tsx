@@ -1,9 +1,17 @@
 import { useState } from 'react';
 import { describe, expect, test } from 'vitest';
-import { act, fireEvent, render, screen, within } from '@testing-library/react';
+import {
+  act,
+  fireEvent,
+  render,
+  renderHook,
+  screen,
+  within
+} from '@testing-library/react';
 import { CartPage } from '../../refactoring/pages/CartPage';
 import { AdminPage } from '../../refactoring/pages/AdminPage';
 import { Coupon, Product } from '../../types';
+import { useForm } from '../../refactoring/hooks/useForm.ts';
 
 const mockProducts: Product[] = [
   {
@@ -261,13 +269,47 @@ describe('advanced > ', () => {
     });
   });
 
-  describe('자유롭게 작성해보세요.', () => {
-    test('새로운 유틸 함수를 만든 후에 테스트 코드를 작성해서 실행해보세요', () => {
-      expect(true).toBe(false);
+  describe('useForm', () => {
+    const initialState: Coupon = {
+      name: '',
+      code: '',
+      discountType: 'percentage',
+      discountValue: 0
+    };
+
+    test('initialState로 상태에 생성한다.', () => {
+      const { result } = renderHook(() => useForm(initialState));
+      expect(result.current.form).toEqual(initialState);
     });
 
-    test('새로운 hook 함수르 만든 후에 테스트 코드를 작성해서 실행해보세요', () => {
-      expect(true).toBe(false);
+    test('상태를 변경 할 수 있다.', () => {
+      const { result } = renderHook(() => useForm(initialState));
+      const newState = { ...initialState, discountValue: 10 };
+
+      expect(result.current.form.discountValue).toEqual(0);
+
+      act(() => {
+        result.current.setForm(newState);
+      });
+
+      expect(result.current.form.discountValue).toEqual(10);
+    });
+
+    test('상태를 초기화 할 수 있다.', () => {
+      const { result } = renderHook(() => useForm(initialState));
+
+      const newState = { ...initialState, discountValue: 10 };
+      act(() => {
+        result.current.setForm(newState);
+      });
+
+      expect(result.current.form.discountValue).toEqual(10);
+
+      act(() => {
+        result.current.clearForm();
+      });
+
+      expect(result.current.form.discountValue).toEqual(0);
     });
   });
 });
