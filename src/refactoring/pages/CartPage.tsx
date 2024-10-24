@@ -2,9 +2,9 @@ import { Coupon, Product } from '../../types.ts';
 import { useCart } from '../hooks';
 import OrderSummary from '../components/order/OrderSummary.tsx';
 import { ChangeEvent } from 'react';
-import CouponApply from '../components/order/CouponApply.tsx';
-import CartItemCard from '../components/order/CartItemCard.tsx';
-import CartItemList from '../components/order/CartItemList.tsx';
+import CouponApply from '../components/coupon/CouponApply.tsx';
+import CartItemCard from '../components/cart/CartItemCard.tsx';
+import CartItemList from '../components/cart/CartItemList.tsx';
 
 interface Props {
   products: Product[];
