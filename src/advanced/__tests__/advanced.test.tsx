@@ -12,6 +12,9 @@ import { CartPage } from '../../refactoring/pages/CartPage';
 import { AdminPage } from '../../refactoring/pages/AdminPage';
 import { Coupon, Product } from '../../types';
 import { useForm } from '../../refactoring/hooks/useForm.ts';
+import { useToggleProduct } from '../../refactoring/hooks/useToggleProduct.ts';
+import { multiply, subtract, sum } from '../../refactoring/utils/calculator.ts';
+import { toggleSet } from '../../refactoring/utils/set.ts';
 
 const mockProducts: Product[] = [
   {
@@ -310,6 +313,77 @@ describe('advanced > ', () => {
       });
 
       expect(result.current.form.discountValue).toEqual(0);
+    });
+  });
+
+  describe('useToggleProduct', () => {
+    const set = new Set();
+    const productId = 'p1';
+
+    test('초기 상태는 빈값이다.', () => {
+      const { result } = renderHook(() => useToggleProduct());
+      expect(result.current.openProductIds).toEqual(set);
+    });
+
+    test('openProductIds에 없는 값을 넣으면 해당 값이 openProductIds에 추가된다.', () => {
+      const { result } = renderHook(() => useToggleProduct());
+
+      expect(result.current.openProductIds).toEqual(set);
+
+      act(() => {
+        result.current.toggleProductAccordion(productId);
+      });
+
+      expect(result.current.openProductIds).toEqual(new Set([productId]));
+    });
+
+    test('이미 존재하는 값을 넣으면 해당 값은 사라진다.', () => {
+      const { result } = renderHook(() => useToggleProduct());
+
+      expect(result.current.openProductIds).toEqual(set);
+
+      act(() => {
+        result.current.toggleProductAccordion(productId);
+      });
+
+      expect(result.current.openProductIds).toEqual(new Set([productId]));
+
+      act(() => {
+        result.current.toggleProductAccordion(productId);
+      });
+
+      expect(result.current.openProductIds).toEqual(set);
+    });
+  });
+
+  describe('calculator', () => {
+    const a = 10;
+    const b = 2;
+
+    test('sum', () => {
+      expect(sum(a, b)).toBe(12);
+    });
+
+    test('multiply', () => {
+      expect(multiply(a, b)).toBe(20);
+    });
+
+    test('subtract', () => {
+      expect(subtract(a, b)).toBe(8);
+    });
+  });
+
+  describe('toggleSet', () => {
+    const set = new Set(['a', 'b']);
+    const C = 'c';
+    const A = 'a';
+
+    test('set에 없는 id를 추가한다.', () => {
+      expect(toggleSet(set, C)).toEqual(new Set(['a', 'b', 'c']));
+    });
+
+    test('set에 있는 id를 제거한다.', () => {
+      expect(toggleSet(set, A)).toEqual(new Set(['b']));
     });
   });
 });
