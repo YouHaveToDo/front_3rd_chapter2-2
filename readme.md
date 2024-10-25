@@ -18,10 +18,4 @@
 - 3번(cartItemList)
 - 4번(cartItemList)
 - 5번(productCreate)
-
-### 할 일
-
-1. cart page 분리
-    1. 컴포넌트 단위로 구성
-    2. 각 컴포넌트에서 사용되는 usecase(feature) 분리 및 구현
  
